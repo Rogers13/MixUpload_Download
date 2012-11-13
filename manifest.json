@@ -1,0 +1,19 @@
+{
+  "name": "MixUpload Download",
+  "version": "1.0.0.0",
+  "manifest_version": 2,
+
+  "default_locale": "en",
+  "description": "__MSG_extDescr__",
+  "icons": { "128": "img/128.png" },
+
+  "content_scripts": [ {
+      "js": [ "scripts/jquery.min.js", "scripts/MixUpload.js" ],
+      "matches": [ "http://*.mixupload.org/*" ]
+  } ],
+  "background": {
+    "scripts": [ "scripts/background.js" ]
+  },
+  //  for tracks name, need block name from response headers
+  "permissions": [ "webRequest", "webRequestBlocking", "http://*.mixupload.org/player/play/*" ]
+}
