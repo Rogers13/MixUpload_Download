@@ -1,5 +1,6 @@
 $(function() {
-  /* Обработчик события OnScroll. Собственно здесь и происходит основная работа */
+  /* Следим за измененями на странице */
+  /* TODO: найти event для ajax */
   var onPageChangedHandler = function ()
   {
     var nodes = getAudioNodes();
