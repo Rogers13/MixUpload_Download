@@ -21,6 +21,14 @@ $(function() {
     for (var i = 0; i < nodes.length; i++)
     {
       getTrackId(nodes[i]);
+      
+      /* Кол-во ссылок (скачать, канал, поделиться) */
+      var s = $(nodes[i]).find('div.menudl s');
+      if (s.size() == 2) {
+        $(s[0]).clone().prependTo(s.parent());
+      }
+      
+      /* Работаем с тегом */
       var link = $(nodes[i]).find('div.menudl a:first');
       if ($(link).attr('onclick')) {
         $(link).removeAttr('onclick');
@@ -72,6 +80,10 @@ $(function() {
     $(a).attr('download', getTrackTitle(node)  );
     $(a).attr('href'    , getDownloadLink(node));
     $(a).attr('title'   , 'Download now!');
+    $(a).css ('color'   , '#b69c7e');
+    $(a).text('скачать');
+    
+    $(a).removeAttr('class');
     $(a).removeAttr('target');
   }
   
@@ -89,6 +101,9 @@ $(function() {
   function initialize()
   {
     /* Кнопка скачать рядом с плеером */
+    $('div.tp-download').show();
+    /* Вперед - назад */
+    $('div#topplayer a').slice(0,2).show();
     $('a#p_download').mouseover( initDownloadPlayerButton );
     onPageChangedHandler();
     $('a#regLink').removeAttr('id');
