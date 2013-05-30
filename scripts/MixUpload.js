@@ -1,11 +1,31 @@
 $(function() {
+  function initialize()
+  {
+    /* Кнопка скачать рядом с плеером */
+    $('div.tp-download').show();
+    /* Вперед - назад */
+    $('div#topplayer a').slice(0,2).show();
+    $('a#p_download').mouseover( initDownloadPlayerButton );
+    onPageChangedHandler();
+    $('a#regLink').removeAttr('id');
+    /* Удаляем рекламу */
+    $('a#link_brand').remove();
+    /* Показываем 40 треков */
+    $('a[href="/tracksonpage/40"]').click();
+    if($('div#ajax_main').children().length == 3)
+      $('div#ajax_main').children().eq(1).remove();
+  };
+
   /* Следим за измененями на странице */
   /* TODO: найти event для ajax */
   var onPageChangedHandler = function ()
   {
     var nodes = getAudioNodes();
     allDownloadLinksModify(nodes);
-
+    makeTrackPublic();
+    $('#jGrowl').remove();
+    // правим отступ после удаления рекламы 
+    $('div#generalwrapper').css('margin-top', '10px');
     setTimeout(onPageChangedHandler, 1000);
   };
 
@@ -30,10 +50,11 @@ $(function() {
       
       /* Работаем с тегом */
       var link = $(nodes[i]).find('div.menudl a:first');
-      if ($(link).attr('onclick')) {
+      if ($(link).attr('onclick'))
         $(link).removeAttr('onclick');
+
+      if ($(link).attr('title') != 'Download!')
         linkModify(link, nodes[i]);
-      }
     }
   };
 
@@ -79,9 +100,10 @@ $(function() {
   function linkModify(a, node){
     $(a).attr('download', getTrackTitle(node)  );
     $(a).attr('href'    , getDownloadLink(node));
-    $(a).attr('title'   , 'Download now!');
+    $(a).attr('title'   , 'Download!'); // Do not modify
     $(a).css ('color'   , '#b69c7e');
-    $(a).text('скачать');
+    if( $(a).find('img').size() == 0 )
+      $(a).text(chrome.i18n.getMessage("download"));
     
     $(a).removeAttr('class');
     $(a).removeAttr('target');
@@ -98,15 +120,16 @@ $(function() {
     }
   };
 
-  function initialize()
+    /* The track is in the closed section of the portal. */
+  function makeTrackPublic()
   {
-    /* Кнопка скачать рядом с плеером */
-    $('div.tp-download').show();
-    /* Вперед - назад */
-    $('div#topplayer a').slice(0,2).show();
-    $('a#p_download').mouseover( initDownloadPlayerButton );
-    onPageChangedHandler();
-    $('a#regLink').removeAttr('id');
-  };
+    $('a.notAllowed.nojs.track-btn').each(function( index ) {
+      var el = $(this);
+      var id = el.attr('href').substring(1);
+      // $('#pl_track' + id).remove();
+      el.attr('href', 'javascript: p.playTrack(PlayList,' + id + ');');
+      el.removeClass('nojs notAllowed');
+    });
+  }
   initialize();
 });

@@ -19,3 +19,8 @@ chrome.webRequest.onHeadersReceived.addListener(
   // extraInfoSpec
   ['blocking', 'responseHeaders']
 );
+/* анти трафик */
+chrome.webRequest.onBeforeRequest.addListener(
+  function(details) { return {cancel: true}; },
+  {urls: ["http://*.mixupload.org/media/backgrounds/*"]},
+  ["blocking"]);

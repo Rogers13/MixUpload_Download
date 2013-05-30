@@ -2,5 +2,9 @@
   "extDescr": {
     "description": "Extension description.",
     "message"    : "Track, mix, music download from http://mixupload.org"
+  },
+  "download": {
+    "description": "download link",
+    "message"    : "download"
   }
 }

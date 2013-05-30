@@ -2,5 +2,9 @@
   "extDescr": {
     "description": "Extension description.",
     "message"    : "Скачивает музыку, треки, миксы, мешапы с сайта http://mixupload.org . Умная система переименования файлов."
+  },
+  "download": {
+    "description": "download link",
+    "message"    : "скачать"
   }
 }
